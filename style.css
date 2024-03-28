@@ -1,0 +1,188 @@
+:root {
+    --dark-background-color: #31363F;
+    --dark-text-color: #e0e0e0;
+    --dark-canvas-background-color: #83b6c21b;
+    --dark-button-background-color: #183D3D;
+    --dark-button-hover-background-color: #93B1A6;
+    --light-background-color: #F7FFE5;
+    --light-text-color: #212121;
+    --light-canvas-background-color: #C4D7B2;
+    --light-button-background-color: #A0C49D;
+    --light-button-hover-background-color: #E1ECC8;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    background-color: var(--dark-background-color);
+    color: var(--dark-text-color);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  
+  .container {
+    text-align: center;
+    background-color: var(--dark-canvas-background-color);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    max-width: 100%;
+    width: 800px;
+  }
+  
+  h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .canvas-container {
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  
+  canvas {
+    border: 2px solid #1031187d;
+    border-radius: 5px;
+    cursor: crosshair;
+    width: 90%;
+    height: auto;
+    background-color: var(--dark-canvas-background-color);
+  }
+  
+  .controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .color-pickers {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  
+  .color-picker,
+  .font-size-picker {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .color-picker label,
+  .font-size-picker label {
+    margin-right: 10px;
+  }
+  
+  .color-picker input[type="color"] {
+    width: 40px;
+    height: 40px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .font-size-picker select {
+    padding: 5px;
+    font-size: 16px;
+    border: 1px solid var(--dark-text-color);
+    border-radius: 5px;
+    background-color: var(--dark-canvas-background-color);
+    color: var(--dark-text-color);
+  }
+  
+  .buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  button {
+    padding: 15px 30px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--dark-button-background-color);
+    color: var(--dark-text-color);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 0 10px;
+    margin-bottom: 10px;
+  }
+  
+  button:hover {
+    background-color: var(--dark-button-hover-background-color);
+  }
+  
+  button:active {
+    background-color: var(--dark-button-background-color);
+  }
+  
+  button:focus {
+    outline: none;
+  }
+  
+  @media screen and (max-width: 600px) {
+    .container {
+      padding: 20px;
+    }
+    
+    h1 {
+      font-size: 20px;
+    }
+    
+    .color-pickers {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .color-picker,
+    .font-size-picker {
+      margin-right: 0;
+      margin-bottom: 15px;
+    }
+    
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      margin: 0 5px;
+      margin-bottom: 10px;
+    }
+  }
+  
+  /* Light mode styles */
+  body.light-mode {
+    background-color: var(--light-background-color);
+    color: var(--light-text-color);
+  }
+  
+  body.light-mode .container {
+    background-color: var(--light-canvas-background-color);
+  }
+  
+  body.light-mode canvas {
+    border-color: var(--light-text-color);
+    background-color: var(--light-canvas-background-color);
+  }
+  
+  body.light-mode .font-size-picker select {
+    border-color: var(--light-text-color);
+    background-color: var(--light-canvas-background-color);
+    color: var(--light-text-color);
+  }
+  
+  body.light-mode button {
+    background-color: var(--light-button-background-color);
+    color: var(--light-text-color);
+  }
+  
+  body.light-mode button:hover {
+    background-color: var(--light-button-hover-background-color);
+  }
+  
+  body.light-mode button:active {
+    background-color: var(--light-button-background-color);
+  }
