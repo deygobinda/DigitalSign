@@ -19,10 +19,10 @@ canvas.addEventListener("mousemove", draw);
 canvas.addEventListener("mouseup", stopDrawing);
 canvas.addEventListener("mouseout", stopDrawing);
 
-canvas.addEventListener("touchstart", startDrawing);
-canvas.addEventListener("touchmove", draw);
-canvas.addEventListener("touchend", stopDrawing);
-canvas.addEventListener("touchcancel", stopDrawing);
+canvas.addEventListener("touchstart", handleTouchStart, { passive: false });
+canvas.addEventListener("touchmove", handleTouchMove, { passive: false });
+canvas.addEventListener("touchend", handleTouchEnd, { passive: false });
+canvas.addEventListener("touchcancel", handleTouchEnd, { passive: false });
 
 backgroundColorPicker.addEventListener("change", changeBackgroundColor);
 fontColorPicker.addEventListener("change", changeFontColor);
@@ -34,32 +34,47 @@ lightModeButton.addEventListener("click", toggleLightMode);
 
 function getTouchCoordinates(e) {
   if (e.touches && e.touches.length > 0) {
+    const rect = canvas.getBoundingClientRect();
     const touch = e.touches[0];
     return {
-      x: touch.clientX - canvas.getBoundingClientRect().left,
-      y: touch.clientY - canvas.getBoundingClientRect().top,
+      x: touch.clientX - rect.left,
+      y: touch.clientY - rect.top,
     };
   }
   return null;
 }
 
+function handleTouchStart(e) {
+  e.preventDefault();
+  const { x, y } = getTouchCoordinates(e);
+  startDrawing({ offsetX: x, offsetY: y });
+}
+
+function handleTouchMove(e) {
+  e.preventDefault();
+  const { x, y } = getTouchCoordinates(e);
+  draw({ offsetX: x, offsetY: y });
+}
+
+function handleTouchEnd(e) {
+  e.preventDefault();
+  stopDrawing();
+}
+
 function startDrawing(e) {
   isDrawing = true;
   ctx.beginPath();
-  const { x, y } = e.type === "touchstart" ? getTouchCoordinates(e) : { x: e.offsetX, y: e.offsetY };
-  ctx.moveTo(x, y);
+  ctx.moveTo(e.offsetX, e.offsetY);
 }
 
 function draw(e) {
   if (!isDrawing) return;
-  e.preventDefault();
   ctx.lineWidth = parseInt(fontSizeSelector.value);
   ctx.lineCap = "round";
-  const { x, y } = e.type === "touchmove" ? getTouchCoordinates(e) : { x: e.offsetX, y: e.offsetY };
-  ctx.lineTo(x, y);
+  ctx.lineTo(e.offsetX, e.offsetY);
   ctx.stroke();
   ctx.beginPath();
-  ctx.moveTo(x, y);
+  ctx.moveTo(e.offsetX, e.offsetY);
 }
 
 function stopDrawing() {
