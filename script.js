@@ -8,16 +8,21 @@ const fontSizeSelector = document.getElementById("fontSizeSelector");
 const undoButton = document.getElementById("undoButton");
 const lightModeButton = document.getElementById("lightModeButton");
 
-canvas.width = 800;
-canvas.height = 400;
+canvas.width = canvas.offsetWidth;
+canvas.height = canvas.offsetHeight;
 
 let isDrawing = false;
 let paths = [];
 
-canvas.addEventListener("mousedown", startDrawing); 
+canvas.addEventListener("mousedown", startDrawing);
 canvas.addEventListener("mousemove", draw);
 canvas.addEventListener("mouseup", stopDrawing);
 canvas.addEventListener("mouseout", stopDrawing);
+
+canvas.addEventListener("touchstart", startDrawing);
+canvas.addEventListener("touchmove", draw);
+canvas.addEventListener("touchend", stopDrawing);
+canvas.addEventListener("touchcancel", stopDrawing);
 
 backgroundColorPicker.addEventListener("change", changeBackgroundColor);
 fontColorPicker.addEventListener("change", changeFontColor);
@@ -27,27 +32,45 @@ fontSizeSelector.addEventListener("change", changeFontSize);
 undoButton.addEventListener("click", undoLastPath);
 lightModeButton.addEventListener("click", toggleLightMode);
 
+function getTouchCoordinates(e) {
+  if (e.touches && e.touches.length > 0) {
+    const touch = e.touches[0];
+    return {
+      x: touch.clientX - canvas.getBoundingClientRect().left,
+      y: touch.clientY - canvas.getBoundingClientRect().top,
+    };
+  }
+  return null;
+}
+
 function startDrawing(e) {
   isDrawing = true;
   ctx.beginPath();
-  ctx.moveTo(e.offsetX, e.offsetY);
+  const { x, y } = e.type === "touchstart" ? getTouchCoordinates(e) : { x: e.offsetX, y: e.offsetY };
+  ctx.moveTo(x, y);
 }
 
 function draw(e) {
   if (!isDrawing) return;
+  e.preventDefault();
   ctx.lineWidth = parseInt(fontSizeSelector.value);
   ctx.lineCap = "round";
-  ctx.lineTo(e.offsetX, e.offsetY);
+  const { x, y } = e.type === "touchmove" ? getTouchCoordinates(e) : { x: e.offsetX, y: e.offsetY };
+  ctx.lineTo(x, y);
   ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(x, y);
 }
 
 function stopDrawing() {
   if (isDrawing) {
     ctx.stroke();
+    ctx.closePath();
     isDrawing = false;
     paths.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
   }
 }
+
 
 function changeBackgroundColor(e) {
   ctx.fillStyle = e.target.value;
