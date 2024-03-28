@@ -51,6 +51,9 @@
     height: auto;
     background-color: var(--dark-canvas-background-color);
   }
+   
+
+
   
   .controls {
     display: flex;

@@ -14,7 +14,7 @@ canvas.height = 400;
 let isDrawing = false;
 let paths = [];
 
-canvas.addEventListener("mousedown", startDrawing);
+canvas.addEventListener("mousedown", startDrawing); 
 canvas.addEventListener("mousemove", draw);
 canvas.addEventListener("mouseup", stopDrawing);
 canvas.addEventListener("mouseout", stopDrawing);
